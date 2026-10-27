@@ -42,7 +42,7 @@
 
   // Chargement des données une fois la page affichée
   onMounted(async () => {
-    const response = await fetch('https://apis.divtec.me/api/sports/teams?limit=100')
+    const response = await fetch('https://apis.divtec.me/api/sports/teams?limit=1000')
     const json = await response.json()
     // L'API renvoie { data: [...], pagination: {...} } : les équipes sont dans "data"
     teams.value = json.data
