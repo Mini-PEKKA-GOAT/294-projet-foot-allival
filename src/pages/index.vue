@@ -6,9 +6,7 @@
          - text-h3 : taille de texte prédéfinie par Vuetify (titre de niveau 3)
          - text-center : centre le texte horizontalement
          - my-6 : marge verticale (haut + bas) de taille 6 -->
-    <h1 class="text-h3 text-center my-6">
-      Équipes sportives
-    </h1>
+    <h1 class="text-h3 text-center my-6">Équipes sportives</h1>
 
     <!-- v-row : ligne de la grille Vuetify (basée sur 12 colonnes) -->
     <v-row>
@@ -27,29 +25,9 @@
         md="4"
         sm="6"
       >
-        <!-- v-card : carte Vuetify qui contient les infos d'une équipe -->
-        <v-card>
-
-          <!-- v-img : image du logo de l'équipe
-               - :alt : texte alternatif (accessibilité / si l'image ne charge pas), ici le nom de l'équipe
-               - ma-4 : marge de taille 4 tout autour de l'image
-               - height="200" : hauteur fixe de 200px pour que toutes les cartes soient alignées
-               - :src : URL de l'image, construite par la fonction getImageUrl à partir du nom de fichier -->
-          <v-img
-            :alt="team.name"
-            class="ma-4"
-            height="200"
-            :src="getImageUrl(team.image)"
-          />
-
-          <!-- Titre de la carte : affiche le nom de l'équipe grâce à l'interpolation {{ }} -->
-          <v-card-title>{{ team.name }}</v-card-title>
-
-          <!-- Sous-titre de la carte : affiche la ligue et le pays de l'équipe -->
-          <v-card-subtitle>
-            {{ team.league }} : {{ team.country }}
-          </v-card-subtitle>
-        </v-card>
+        <!-- team-card : composant TeamCard.vue qui affiche la carte d'une équipe
+             - :team="team" : passe l'équipe actuelle de la boucle à la prop "team" du composant -->
+        <team-card :team="team" />
       </v-col>
     </v-row>
   </v-container>
@@ -63,9 +41,8 @@
 // ref : crée une variable réactive (le template se met à jour automatiquement quand elle change)
   import { onMounted, ref } from 'vue'
 
-  // Fonction utilitaire qui transforme le nom d'un fichier image en URL complète
-  // (le "@" est un alias qui pointe vers le dossier "src" du projet)
-  import { getImageUrl } from '@/utils/imageUrl'
+  // Composant qui affiche la carte d'une équipe (src/components/TeamCard.vue)
+  import TeamCard from '@/components/TeamCard.vue'
 
   // Tableau réactif qui contiendra la liste des équipes.
   // Il est vide au départ : rien ne s'affiche tant que les données ne sont pas chargées.
@@ -86,8 +63,5 @@
     // Les équipes se trouvent dans "data", donc on les stocke dans notre variable réactive.
     // ⚠️ Avec ref, on doit passer par ".value" pour lire ou modifier la valeur dans le script.
     teams.value = json.data
-
-    // Affiche les équipes dans la console du navigateur (utile pour vérifier les données reçues)
-    console.log(teams.value)
   })
 </script>
