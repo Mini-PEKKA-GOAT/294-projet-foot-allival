@@ -40,7 +40,7 @@
   // Variable réactive : tableau vide au départ
   const teams = ref([])
 
-  // Chargement des données une fois la page affichée
+  // Chargement des données une  fois la page affichée
   onMounted(async () => {
     const response = await fetch('https://apis.divtec.me/api/sports/teams')
     const json = await response.json()
