@@ -6,7 +6,7 @@
          - text-h3 : taille de texte prédéfinie par Vuetify (titre de niveau 3)
          - text-center : centre le texte horizontalement
          - my-6 : marge verticale (haut + bas) de taille 6 -->
-    <h1 class="text-h3 text-center my-6">Équipes sportives</h1>
+    <h1 class="text-h3 text-center my-6">Footix</h1>
 
     <!-- v-row : ligne de la grille Vuetify (basée sur 12 colonnes) -->
     <v-row>
@@ -61,7 +61,7 @@
 
     // L'API renvoie un objet de la forme { data: [...], pagination: {...} }.
     // Les équipes se trouvent dans "data", donc on les stocke dans notre variable réactive.
-    // ⚠️ Avec ref, on doit passer par ".value" pour lire ou modifier la valeur dans le script.
+    // Avec ref, on doit passer par ".value" pour lire ou modifier la valeur dans le script.
     teams.value = json.data
   })
 </script>
