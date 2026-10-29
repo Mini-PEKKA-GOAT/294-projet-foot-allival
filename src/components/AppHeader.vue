@@ -3,11 +3,10 @@
     <v-container class="d-flex align-center">
       <v-avatar
         class="mr-4 pa-0 cursor-pointer"
-        image="@/assets/pokeball.svg"
+        image="@/assets/logo.svg"
         size="64"
         @click="$router.push('/')"
       />
-
       <v-toolbar-title>Footix</v-toolbar-title>
 
       <v-btn
