@@ -1,6 +1,6 @@
 <template>
   <!-- v-card : carte Vuetify qui contient les infos d'une équipe -->
-  <v-card>
+  <v-card hover :to="`/teams/${team.id}`">
 
     <!-- v-img : image du logo de l'équipe
          - :alt : texte alternatif (accessibilité / si l'image ne charge pas), ici le nom de l'équipe
