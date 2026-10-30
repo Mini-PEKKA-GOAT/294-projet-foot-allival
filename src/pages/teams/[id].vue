@@ -1,96 +1,41 @@
 <template>
-  <v-container>
-    <v-btn
-      class="mb-4"
-      prepend-icon="mdi-arrow-left"
-      variant="text"
-      @click="$router.back()"
-    >
-      Retour
-    </v-btn>
+  <!-- v-card : carte Vuetify qui contient les infos d'une équipe -->
+  <v-card hover :to="`/teams/${team.id}`">
 
-    <v-alert
-      v-if="!team"
-      type="error"
-      variant="tonal"
-    >
-      Équipe non trouvée.
-    </v-alert>
+    <!-- v-img : image du logo de l'équipe
+         - :alt : texte alternatif (accessibilité / si l'image ne charge pas), ici le nom de l'équipe
+         - ma-4 : marge de taille 4 tout autour de l'image
+         - height="200" : hauteur fixe de 200px pour que toutes les cartes soient alignées
+         - :src : URL de l'image, construite par la fonction getImageUrl à partir du chemin renvoyé par l'API -->
+    <v-img
+      :alt="team.name"
+      class="ma-4"
+      height="200"
+      :src="getImageUrl(team.image)"
+    />
 
-    <v-card
-      v-else
-      class="mx-auto"
-      max-width="800"
-    >
-      <v-img
-        :alt="team.name"
-        height="300"
-        :src="getImageUrl(team.image)"
-      />
+    <!-- Titre de la carte : affiche le nom de l'équipe grâce à l'interpolation {{ }} -->
+    <v-card-title>{{ team.name }}</v-card-title>
 
-      <v-card-title class="text-h4">
-        {{ team.name }}
-      </v-card-title>
-
-      <v-card-subtitle>
-        {{ team.league }} : {{ team.country }}
-      </v-card-subtitle>
-
-      <v-card-text>
-        <p v-if="team.description" class="text-body-1 mb-4">
-          {{ team.description }}
-        </p>
-
-        <!-- Affiche automatiquement tous les autres champs renvoyés par l'API -->
-        <v-list v-if="details.length > 0" density="compact">
-          <v-list-item
-            v-for="detail in details"
-            :key="detail.key"
-            :subtitle="detail.label"
-            :title="detail.value"
-          />
-        </v-list>
-      </v-card-text>
-    </v-card>
-  </v-container>
+    <!-- Sous-titre de la carte : affiche la ligue et le pays de l'équipe -->
+    <v-card-subtitle>
+      {{ team.league }} : {{ team.country }}
+    </v-card-subtitle>
+  </v-card>
 </template>
 
 <script setup>
-  // Import du store des équipes
-  import { useTeamStore } from '@/stores/teamStore'
+// Fonction utilitaire qui transforme le chemin d'une image en URL complète
   import { getImageUrl } from '@/utils/imageUrl'
 
-  // Récupérer l'ID depuis les paramètres de la route
-  const route = useRoute()
-
-  // Instancier le store
-  const teamStore = useTeamStore()
-
-  // Utiliser le getter du store pour trouver l'équipe
-  // computed se met à jour automatiquement si l'ID change
-  const team = computed(() => {
-    return teamStore.getTeamById(route.params.id)
-  })
-
-  // Champs déjà affichés ailleurs dans la carte
-  const HIDDEN_KEYS = new Set([
-    'id', 'name', 'description', 'image',
-    'league', 'country', 'created_at', 'updated_at',
-  ])
-
-  // Tous les autres champs de l'équipe (abréviation, stade, année de création, etc.)
-  const details = computed(() => {
-    if (!team.value) return []
-    return Object.entries(team.value)
-      .filter(([key, value]) =>
-        !HIDDEN_KEYS.has(key)
-        && value !== null && value !== ''
-        && typeof value !== 'object',
-      )
-      .map(([key, value]) => ({
-        key,
-        label: key.charAt(0).toUpperCase() + key.slice(1).replaceAll('_', ' '),
-        value: String(value),
-      }))
+  // defineProps : déclare les données que le composant reçoit de son parent.
+  // Ici, le parent (index.vue) lui passe une équipe via :team="team".
+  // - type: Object   : la prop doit être un objet (une équipe de l'API)
+  // - required: true : Vue affiche un avertissement si on oublie de la passer
+  defineProps({
+    team: {
+      type: Object,
+      required: true,
+    },
   })
 </script>
