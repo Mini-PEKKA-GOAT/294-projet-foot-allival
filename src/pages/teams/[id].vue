@@ -24,9 +24,8 @@
     >
       <v-img
         :alt="team.name"
-        contain
         height="300"
-        :src="team.logo"
+        :src="getImageUrl(team.image)"
       />
 
       <v-card-title class="text-h4">
@@ -34,7 +33,7 @@
       </v-card-title>
 
       <v-card-subtitle>
-        {{ team.league }}
+        {{ team.league }} : {{ team.country }}
       </v-card-subtitle>
 
       <v-card-text>
@@ -47,8 +46,9 @@
 </template>
 
 <script setup>
-// Import du store des équipes
+  // Import du store des équipes
   import { useTeamStore } from '@/stores/teamStore'
+  import { getImageUrl } from '@/utils/imageUrl'
 
   // Récupérer l'ID depuis les paramètres de la route
   const route = useRoute()
