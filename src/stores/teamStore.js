@@ -58,14 +58,18 @@ export const useTeamStore = defineStore('team', {
      * Note : ne gère pas isLoading — c'est init() qui s'en charge.
      */
     async fetchTeams () {
-      const response = await fetch('https://apis.divtec.me/api/sports/teams')
+      // - limit=100     : récupère jusqu'à 100 équipes
+      // - sport=Soccer  : filtre uniquement les équipes de football
+      const response = await fetch('https://apis.divtec.me/api/sports/teams?limit=100&sport=Soccer')
 
       // Vérifier que la réponse est OK (status 200-299)
       if (!response.ok) {
         throw new Error(`Erreur HTTP : ${response.status}`)
       }
 
-      this.teams = await response.json()
+      // L'API renvoie { data: [...], pagination: {...} } : les équipes sont dans "data"
+      const json = await response.json()
+      this.teams = json.data
       console.log('Équipes chargées :', this.teams.length)
     },
 
@@ -80,7 +84,9 @@ export const useTeamStore = defineStore('team', {
         throw new Error(`Erreur HTTP : ${response.status}`)
       }
 
-      this.leagues = await response.json()
+      // Même format que pour les équipes : les ligues sont dans "data"
+      const json = await response.json()
+      this.leagues = json.data
       console.log('Ligues chargées :', this.leagues.length)
     },
 
