@@ -40,6 +40,16 @@
         <p v-if="team.description" class="text-body-1 mb-4">
           {{ team.description }}
         </p>
+
+        <!-- Affiche automatiquement tous les autres champs renvoyés par l'API -->
+        <v-list v-if="details.length > 0" density="compact">
+          <v-list-item
+            v-for="detail in details"
+            :key="detail.key"
+            :subtitle="detail.label"
+            :title="detail.value"
+          />
+        </v-list>
       </v-card-text>
     </v-card>
   </v-container>
@@ -60,5 +70,27 @@
   // computed se met à jour automatiquement si l'ID change
   const team = computed(() => {
     return teamStore.getTeamById(route.params.id)
+  })
+
+  // Champs déjà affichés ailleurs dans la carte
+  const HIDDEN_KEYS = new Set([
+    'id', 'name', 'description', 'image',
+    'league', 'country', 'created_at', 'updated_at',
+  ])
+
+  // Tous les autres champs de l'équipe (abréviation, stade, année de création, etc.)
+  const details = computed(() => {
+    if (!team.value) return []
+    return Object.entries(team.value)
+      .filter(([key, value]) =>
+        !HIDDEN_KEYS.has(key)
+        && value !== null && value !== ''
+        && typeof value !== 'object',
+      )
+      .map(([key, value]) => ({
+        key,
+        label: key.charAt(0).toUpperCase() + key.slice(1).replaceAll('_', ' '),
+        value: String(value),
+      }))
   })
 </script>
