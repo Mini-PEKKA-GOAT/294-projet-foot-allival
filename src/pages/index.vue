@@ -37,31 +37,20 @@
 // <script setup> : syntaxe simplifiée de la Composition API de Vue 3.
 // Tout ce qui est déclaré ici (variables, imports) est directement utilisable dans le template.
 
-// onMounted : hook de cycle de vie, exécute du code une fois le composant affiché dans le DOM
-// ref : crée une variable réactive (le template se met à jour automatiquement quand elle change)
-  import { onMounted, ref } from 'vue'
+// storeToRefs : permet de récupérer les données du store sans perdre leur réactivité
+  import { storeToRefs } from 'pinia'
 
   // Composant qui affiche la carte d'une équipe (src/components/TeamCard.vue)
   import TeamCard from '@/components/TeamCard.vue'
 
-  // Tableau réactif qui contiendra la liste des équipes.
-  // Il est vide au départ : rien ne s'affiche tant que les données ne sont pas chargées.
-  const teams = ref([])
+  // Store Pinia des équipes (src/stores/teamStore.js) : c'est lui qui charge les équipes depuis l'API
+  import { useTeamStore } from '@/stores/teamStore'
 
-  // Au montage du composant, on va chercher les équipes sur l'API.
-  // La fonction est "async" pour pouvoir utiliser "await" (attendre la réponse du serveur).
-  onMounted(async () => {
-    // Requête HTTP GET vers l'API :
-    // - limit=100     : récupère jusqu'à 100 équipes
-    // - sport=Soccer  : filtre uniquement les équipes de football
-    const response = await fetch('https://apis.divtec.me/api/sports/teams?limit=100&sport=Soccer')
+  // Instancier le store
+  const teamStore = useTeamStore()
 
-    // Convertit la réponse brute (texte) en objet JavaScript
-    const json = await response.json()
-
-    // L'API renvoie un objet de la forme { data: [...], pagination: {...} }.
-    // Les équipes se trouvent dans "data", donc on les stocke dans notre variable réactive.
-    // Avec ref, on doit passer par ".value" pour lire ou modifier la valeur dans le script.
-    teams.value = json.data
-  })
+  // Destructurer le state en gardant la réactivité
+  // storeToRefs convertit chaque propriété du state en ref :
+  // le template se met à jour automatiquement quand le store a fini de charger les équipes
+  const { teams } = storeToRefs(teamStore)
 </script>
