@@ -63,7 +63,7 @@ export const useTeamStore = defineStore('team', {
       }
 
       try {
-        const response = await api.get('/teams?limit=100&sport=Soccer')
+        const response = await api.get('/teams?limit=1000&sport=Soccer')
 
         this.teams = response.data.data
       } catch (error) {
