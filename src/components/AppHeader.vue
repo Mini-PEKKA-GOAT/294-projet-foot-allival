@@ -4,7 +4,7 @@
       <v-avatar
         class="mr-4 pa-0 cursor-pointer"
         image="@/assets/logo.png"
-        size="64"
+        size="48"
         @click="$router.push('/')"
       />
       <v-toolbar-title>Footix</v-toolbar-title>
