@@ -3,7 +3,7 @@
     <v-container class="d-flex align-center">
       <v-avatar
         class="mr-4 pa-0 cursor-pointer"
-        image="@/assets/logo.svg"
+        image="@/assets/logo.png"
         size="64"
         @click="$router.push('/')"
       />
