@@ -32,8 +32,8 @@
 </template>
 
 <script setup>
-import TeamCard from '@/components/TeamCard.vue'
-import { useTeamStore } from '@/stores/teamStore'
+  import TeamCard from '@/components/TeamCard.vue'
+  import { useTeamStore } from '@/stores/teamStore'
 
-const teamStore = useTeamStore()
+  const teamStore = useTeamStore()
 </script>
